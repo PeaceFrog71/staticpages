@@ -1,0 +1,2 @@
+# staticpages
+boot.dev project
