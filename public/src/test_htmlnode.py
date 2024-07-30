@@ -1,6 +1,6 @@
 import unittest
 
-from htmlnode import HTMLNode, LeafNode
+from htmlnode import HTMLNode, LeafNode, ParentNode
 
 class TestHTMLNode(unittest.TestCase):
     def test_props_to_html(self):
@@ -17,11 +17,27 @@ class TestHTMLNode(unittest.TestCase):
         Node tag:       p
         Node value:     This is some text
         Node children:  None
-        Node props:     None
+        Node props:     {}
         """)
         
     def test_to_html(self):
         node = LeafNode(tag="p", value="This is some text", props={"class": "bold", "id": "test", "style": "color: red;"})
         self.assertEqual(node.to_html(), "<p class=\"bold\" id=\"test\" style=\"color: red;\">This is some text</p>")
         
+    def test_ParentNode(self):
+        with self.assertRaises(ValueError) as context: 
+            ParentNode(tag="div", props={"class": "bold", "id": "test", "style": "color: red;"})
+        self.assertEqual(str(context.exception), "All parent nodes must have children")
+        
+        node_with_children = ParentNode(
+            "p",
+            [
+                LeafNode("b", "Bold text"),
+                LeafNode(None, "Normal text"),
+                LeafNode("i", "italic text"),
+                LeafNode(None, "Normal text"),
+            ],
+        )
+        
+        self.assertEqual(node_with_children.to_html(), "<p><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>") 
         

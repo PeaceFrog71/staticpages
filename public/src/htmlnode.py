@@ -1,5 +1,5 @@
 class HTMLNode:
-    def __init__(self, tag=None, value=None, children=None, props=None):
+    def __init__(self, tag=None, value=None, children=None, props=None or {}):
         self.tag = tag
         self.value = value
         self.children = children
@@ -24,7 +24,7 @@ class HTMLNode:
 
 class LeafNode(HTMLNode):
     def __init__(self, tag=None, value=None, children=None,props=None):
-        super().__init__(tag, value, children, props)
+        super().__init__(tag, value, children, props or {})
         if value is None:
             raise ValueError("All leaf nodes must have a value")
         
@@ -33,9 +33,27 @@ class LeafNode(HTMLNode):
             return self.value
         return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
     
+    def text_node_to_html(self, text_node):
+        match text_node.text_type:
+            case "text":
+                return LeafNode(value=text_node.text)
+            case "bold":
+                return LeafNode(tag="b", value=text_node.text)
+            case "italic":
+                return LeafNode(tag="i", value=text_node.text)
+            case "code":
+                return LeafNode(tag="code", value=text_node.text)
+            case "link":
+                return LeafNode(tag="a", value=text_node.text, props={"href": text_node.url})
+            case "image":
+                return LeafNode(tag="img", props={"src": text_node.url, "alt": text_node.text})
+            case _:
+                raise Exception("Invalid text node type")
+                
+    
 class ParentNode(HTMLNode):
-    def __init__(self, tag=None, value=None, children=None,props=None):
-        super().__init__(tag, value, children, props)
+    def __init__(self, tag=None, children=None,props=None):
+        super().__init__(tag, children, props or {})
         if children is None:
             raise ValueError("All parent nodes must have children")
         
