@@ -1,2 +1,3 @@
-# staticpages
-boot.dev project
+# Static Webpage Generator
+## staticpage is a boot.dev project
+
