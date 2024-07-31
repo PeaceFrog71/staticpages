@@ -1,5 +1,5 @@
 class HTMLNode:
-    def __init__(self, tag=None, value=None, children=None, props=None or {}):
+    def __init__(self, tag=None, value=None, children=None, props={}):
         self.tag = tag
         self.value = value
         self.children = children
@@ -10,6 +10,8 @@ class HTMLNode:
     
     def props_to_html(self):
         gen_html = ""
+        if not self.props:
+            return gen_html
         for key, value in self.props.items():
             gen_html += f" {key}=\"{value}\""
         return gen_html
@@ -48,7 +50,7 @@ class LeafNode(HTMLNode):
             case "image":
                 return LeafNode(tag="img", props={"src": text_node.url, "alt": text_node.text})
             case _:
-                raise Exception("Invalid text node type")
+                raise ValueError("Invalid text node type")
                 
     
 class ParentNode(HTMLNode):
@@ -60,4 +62,8 @@ class ParentNode(HTMLNode):
     def to_html(self):
         if self.tag is None:
             return "".join([child.to_html() for child in self.children])
+        else:
+            print("joining children")
+            print(type(self.children))
+                
         return f"<{self.tag}{self.props_to_html()}>{''.join([child.to_html() for child in self.children])}</{self.tag}>"

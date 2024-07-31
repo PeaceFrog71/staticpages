@@ -1,6 +1,7 @@
 import unittest
 
 from htmlnode import HTMLNode, LeafNode, ParentNode
+from textnode import TextNode
 
 class TestHTMLNode(unittest.TestCase):
     def test_props_to_html(self):
@@ -30,14 +31,29 @@ class TestHTMLNode(unittest.TestCase):
         self.assertEqual(str(context.exception), "All parent nodes must have children")
         
         node_with_children = ParentNode(
-            "p",
+            tag="p",
+            children=
             [
-                LeafNode("b", "Bold text"),
-                LeafNode(None, "Normal text"),
-                LeafNode("i", "italic text"),
-                LeafNode(None, "Normal text"),
+                LeafNode(tag="b", value="Bold text"),
+                LeafNode(tag=None, value="Normal text"),
+                LeafNode(tag="i", value="italic text"),
+                LeafNode(tag=None, value="Normal text"),
             ],
         )
+        print(node_with_children.to_html())
+        self.assertEqual(node_with_children.to_html(), "<p><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>")
         
-        self.assertEqual(node_with_children.to_html(), "<p><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>") 
+    def test_text_to_html(self):
+        node_boldtxt = TextNode(text_type="b", text="This is some BOLD text")
+        node_italictxt = TextNode("i", "This is some ITALIC text")
+        node_codetxt = TextNode("code", "This is some CODE text")
+        node_linktxt = TextNode("link", "This is a LINK", "www.google.com")
+        node_imgtxt = TextNode("image", "This is an IMAGE", "https://cdn1.vox-cdn.com/uploads/chorus_asset/file/4019352/september-1st-doodle-do-not-translate-5078286822539264-hp.0.gif")
+        
+        node_boldhtml = LeafNode().text_node_to_html(node_boldtxt)
+             
+        
+        
+        self.assertEqual(node_boldhtml, "<b>This is some BOLD text</b>")
+        
         
