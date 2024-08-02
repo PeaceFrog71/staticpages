@@ -51,8 +51,8 @@ class ParentNode(HTMLNode):
         if self.tag is None:
             return ''.join([child.to_html() for child in self.children])
 
-        print("joining children")
-        print(type(self.children))
+        #print("joining children")
+        #print(type(self.children))
                 
         return f"<{self.tag}{self.props_to_html()}>{''.join([child.to_html() for child in self.children])}</{self.tag}>"
 

@@ -42,7 +42,7 @@ class TestHTMLNode(unittest.TestCase):
             ],
             props={"class": "bold", "id": "test", "style": "color: red;"}
         )
-        print(node_with_children.to_html())
+        #print(node_with_children.to_html())
         self.assertEqual(node_with_children.to_html(), "<p class=\"bold\" id=\"test\" style=\"color: red;\"><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>")
     
 
