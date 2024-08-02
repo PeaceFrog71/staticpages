@@ -29,6 +29,7 @@ class TestHTMLNode(unittest.TestCase):
         with self.assertRaises(ValueError) as context: 
             ParentNode(tag="div", props={"class": "bold", "id": "test", "style": "color: red;"})
         self.assertEqual(str(context.exception), "Parent nodes must have children")
+        self.assertEqual(str(context.exception), "Parent nodes must have children")
         
         node_with_children = ParentNode(
             tag="p",
