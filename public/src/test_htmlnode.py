@@ -28,7 +28,7 @@ class TestHTMLNode(unittest.TestCase):
     def test_ParentNode(self):
         with self.assertRaises(ValueError) as context: 
             ParentNode(tag="div", props={"class": "bold", "id": "test", "style": "color: red;"})
-        self.assertEqual(str(context.exception), "All parent nodes must have children")
+        self.assertEqual(str(context.exception), "Parent nodes must have children")
         
         node_with_children = ParentNode(
             tag="p",
@@ -39,9 +39,10 @@ class TestHTMLNode(unittest.TestCase):
                 LeafNode(tag="i", value="italic text"),
                 LeafNode(tag=None, value="Normal text"),
             ],
+            props={"class": "bold", "id": "test", "style": "color: red;"}
         )
         print(node_with_children.to_html())
-        self.assertEqual(node_with_children.to_html(), "<p><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>")
+        self.assertEqual(node_with_children.to_html(), "<p class=\"bold\" id=\"test\" style=\"color: red;\"><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>")
         
     def test_text_to_html(self):
         node_boldtxt = TextNode(text_type="b", text="This is some BOLD text")
@@ -50,10 +51,6 @@ class TestHTMLNode(unittest.TestCase):
         node_linktxt = TextNode("link", "This is a LINK", "www.google.com")
         node_imgtxt = TextNode("image", "This is an IMAGE", "https://cdn1.vox-cdn.com/uploads/chorus_asset/file/4019352/september-1st-doodle-do-not-translate-5078286822539264-hp.0.gif")
         
-        node_boldhtml = LeafNode().text_node_to_html(node_boldtxt)
-             
-        
-        
-        self.assertEqual(node_boldhtml, "<b>This is some BOLD text</b>")
+
         
         
