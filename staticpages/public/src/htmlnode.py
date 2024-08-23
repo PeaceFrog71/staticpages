@@ -1,12 +1,12 @@
 class HTMLNode:
-    def __init__(self, tag=None, value=None, children=None, props=None):
+    def __init__(self, tag=None, value=None, children=None, props={}):
         self.tag = tag
         self.value = value
         self.children = children
         self.props = props
   
     def to_html(self):
-        raise NotImplementedError("to_html method not implemented")
+        raise NotImplementedError
     
     def props_to_html(self):
         gen_html = ""
@@ -51,8 +51,24 @@ class ParentNode(HTMLNode):
         if self.tag is None:
             return ''.join([child.to_html() for child in self.children])
 
-        #print("joining children")
-        #print(type(self.children))
+        print("joining children")
+        print(type(self.children))
                 
         return f"<{self.tag}{self.props_to_html()}>{''.join([child.to_html() for child in self.children])}</{self.tag}>"
 
+def text_node_to_html(text_node):
+    match text_node.text_type:
+        case "text":
+            return LeafNode(value=text_node.text)
+        case "bold":
+            return LeafNode(tag="b", value=text_node.text)
+        case "italic":
+            return LeafNode(tag="i", value=text_node.text)
+        case "code":
+            return LeafNode(tag="code", value=text_node.text)
+        case "link":
+            return LeafNode(tag="a", value=text_node.text, props={"href": text_node.url})
+        case "image":
+            return LeafNode(tag="img", value="", props={"src": text_node.url, "alt": text_node.text})
+        case _:
+            raise ValueError("Invalid text node type")

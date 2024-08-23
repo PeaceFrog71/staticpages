@@ -1,14 +1,14 @@
 import unittest
 
-from htmlnode import HTMLNode, LeafNode, ParentNode
-from textnode import TextNode, text_node_to_html
+from htmlnode import HTMLNode, LeafNode, ParentNode, text_node_to_html
+from textnode import TextNode
 
 class TestHTMLNode(unittest.TestCase):
     def test_props_to_html(self):
         node = HTMLNode(props={"class": "bold", "id": "test"})
         node2 = HTMLNode(props={"href": "www.google.com", "target": "_blank"})
-        self.assertEqual(node.props_to_html(), " class=\"bold\" id=\"test\"")
-        self.assertEqual(node2.props_to_html(), " href=\"www.google.com\" target=\"_blank\"")
+        self.assertEqual(node.props_to_html(), f" class=\"bold\" id=\"test\"")
+        self.assertEqual(node2.props_to_html(), f" href=\"www.google.com\" target=\"_blank\"")
         
         node3 = HTMLNode(tag="p", value="This is some text", props={"class": "bold", "id": "test", "style": "color: red;"})
         self.assertEqual(node3.props_to_html(), " class=\"bold\" id=\"test\" style=\"color: red;\"")
@@ -18,7 +18,7 @@ class TestHTMLNode(unittest.TestCase):
         Node tag:       p
         Node value:     This is some text
         Node children:  None
-        Node props:     None
+        Node props:     {}
         """)
         
     def test_to_html(self):
@@ -42,7 +42,7 @@ class TestHTMLNode(unittest.TestCase):
             ],
             props={"class": "bold", "id": "test", "style": "color: red;"}
         )
-        #print(node_with_children.to_html())
+        print(node_with_children.to_html())
         self.assertEqual(node_with_children.to_html(), "<p class=\"bold\" id=\"test\" style=\"color: red;\"><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>")
     
 
