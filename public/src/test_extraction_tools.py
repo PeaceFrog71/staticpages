@@ -18,6 +18,7 @@ class TestExtractionTools(unittest.TestCase):
         print("testing link extraction...")
         text_link = """This is text with a link [to boot dev](https://www.boot.dev)
         and [to youtube](https://www.youtube.com/@bootdotdev)"""
+        output = extract_markdown_links(text_link)
         expected_output = [("to boot dev", "https://www.boot.dev"),
                            ("to youtube", "https://www.youtube.com/@bootdotdev")]
         self.assertEqual(extract_markdown_links(text_link), expected_output)
