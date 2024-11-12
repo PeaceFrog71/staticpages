@@ -1,8 +1,19 @@
 from htmlnode import LeafNode
-from text_types import *
+from enum import Enum
+
+class TextType(Enum):
+    #Text types
+    TEXT = "text"
+    BOLD = "bold"
+    ITALIC = "italic"
+    CODE = "code"
+    LINK = "link"
+    IMAGE = "image"
 
 class TextNode:
-    def __init__(self, text, text_type, url=None):
+    def __init__(self, text, text_type: TextType, url=None):
+        if not isinstance(text_type, TextType):
+            raise ValueError("text_type must be an instance of a TextType enum")
         self.text = text
         self.text_type = text_type
         self.url = url
@@ -24,18 +35,16 @@ class TextNode:
     
 def text_node_to_html(text_node):
     match text_node.text_type:
-        case "text":
+        case TextType.TEXT:
             return LeafNode(value=text_node.text)
-        case "bold":
+        case TextType.BOLD:
             return LeafNode(tag="b", value=text_node.text)
-        case "italic":
+        case TextType.ITALIC:
             return LeafNode(tag="i", value=text_node.text)
-        case "code":
+        case TextType.CODE:
             return LeafNode(tag="code", value=text_node.text)
-        case "link":
+        case TextType.LINK:
             return LeafNode(tag="a", value=text_node.text, props={"href": text_node.url})
-        case "image":
+        case TextType.IMAGE:
             return LeafNode(tag="img", value="", props={"src": text_node.url, "alt": text_node.text})
-        case _:
-            raise ValueError("Invalid text node type")
-
+        
