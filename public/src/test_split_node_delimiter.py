@@ -1,12 +1,13 @@
 import unittest
-from textnode import TextNode
+from textnode import TextNode, TextType
 from extraction_tools import split_nodes_delimiter
+
 
 class TestSplitNodeDelimiter(unittest.TestCase):
     def test_split_nodes_delimiter(self):
         delimiter = "*"
-        text_type_input = "bold"
-        text_type_text = "text"
+        text_type_input = TextType.BOLD
+        text_type_text = TextType.TEXT
         input_text = TextNode("This is a test string. It contains *a delimiter* that will be split into two nodes.", text_type=text_type_text)
         expected_output = [
             TextNode(text="This is a test string. It contains ", text_type=text_type_text),
@@ -18,8 +19,8 @@ class TestSplitNodeDelimiter(unittest.TestCase):
 
     def test_split_nodes_delimiter2(self):
         delimiter = "**"
-        text_type_input = "header"
-        text_type_text = "text"
+        text_type_input = TextType.TEXT
+        text_type_text = TextType.TEXT
         input_text = input_text = TextNode("This is a test string. It contains **a delimiter** that will be split into two nodes.", text_type=text_type_text)
         expected_output = [
             TextNode("This is a test string. It contains ", text_type_text),
@@ -31,8 +32,8 @@ class TestSplitNodeDelimiter(unittest.TestCase):
         
     def test_split_nodes_delimiter3(self):
         delimiter = "a"
-        text_type_input = "link"
-        text_type_text = "text"
+        text_type_input = TextType.LINK
+        text_type_text = TextType.TEXT
         input_text = input_text = TextNode("This is a test string. It contains **a delimiter** that will be split into two nodes.", text_type=text_type_text)
         expected_output = [
             TextNode("This is ", text_type_text),
@@ -46,8 +47,8 @@ class TestSplitNodeDelimiter(unittest.TestCase):
         
     def test_split_nodes_delimiter4(self):
         delimiter = "**"
-        text_type_input = "header"
-        text_type_text = "text"
+        text_type_input = TextType.TEXT
+        text_type_text = TextType.TEXT
         input_text = TextNode("**a delimiter**This is a test string. It contains that will be split into two nodes.", text_type=text_type_text)
         expected_output = [
             TextNode("a delimiter", text_type_input),

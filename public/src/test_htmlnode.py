@@ -1,7 +1,7 @@
 import unittest
 
 from htmlnode import HTMLNode, LeafNode, ParentNode
-from textnode import TextNode, text_node_to_html
+from textnode import TextNode, text_node_to_html, TextType
 
 class TestHTMLNode(unittest.TestCase):
     def test_props_to_html(self):
@@ -48,12 +48,12 @@ class TestHTMLNode(unittest.TestCase):
 
     def test_text_html(self):
         print("testing text to html...")
-        node_normtxt = TextNode(text_type="text", text="This is some text")
-        node_boldtxt = TextNode(text_type="bold", text="This is some BOLD text")
-        node_italictxt = TextNode(text_type="italic", text="This is some ITALIC text")
-        node_codetxt = TextNode(text_type="code", text="This is some CODE text")
-        node_linktxt = TextNode(text_type="link", text="This is a LINK", url="www.google.com")
-        node_imgtxt = TextNode(text_type="image", text="This is an IMAGE", url="https://cdn1.vox-cdn.com/uploads/chorus_asset/file/4019352/september-1st-doodle-do-not-translate-5078286822539264-hp.0.gif")
+        node_normtxt = TextNode(text_type=TextType.TEXT, text="This is some text")
+        node_boldtxt = TextNode(text_type=TextType.BOLD, text="This is some BOLD text")
+        node_italictxt = TextNode(text_type=TextType.ITALIC, text="This is some ITALIC text")
+        node_codetxt = TextNode(text_type=TextType.CODE, text="This is some CODE text")
+        node_linktxt = TextNode(text_type=TextType.LINK, text="This is a LINK", url="www.google.com")
+        node_imgtxt = TextNode(text_type=TextType.IMAGE, text="This is an IMAGE", url="https://cdn1.vox-cdn.com/uploads/chorus_asset/file/4019352/september-1st-doodle-do-not-translate-5078286822539264-hp.0.gif")
 
         self.assertEqual(text_node_to_html(node_normtxt).to_html(), "This is some text")
         self.assertEqual(text_node_to_html(node_boldtxt).to_html(), "<b>This is some BOLD text</b>")

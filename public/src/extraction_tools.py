@@ -20,7 +20,7 @@ def extract_markdown_links(text):
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     return_nodes = []
     for working_node in old_nodes:
-        if working_node.text_type != text_type_text:
+        if working_node.text_type != TextType.TEXT:
             return_nodes.append(working_node)
             continue
 
@@ -33,7 +33,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
             if text_divided[i] == "":
                 continue
             if i % 2 == 0:
-                return_nodes.append(TextNode(text_divided[i], text_type_text))
+                return_nodes.append(TextNode(text_divided[i], TextType.TEXT))
             else:
                 return_nodes.append(TextNode(text_divided[i], text_type))
             
