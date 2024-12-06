@@ -45,14 +45,8 @@ class ParentNode(HTMLNode):
         if children is None:
             raise ValueError("Parent nodes must have children")
         
-        super().__init__(tag=tag, value=None, children=children, props=props or {})
+        super().__init__(tag, None, children, props)
         
     def to_html(self):
-        if self.tag is None:
-            return ''.join([child.to_html() for child in self.children])
-
-        #print("joining children")
-        #print(type(self.children))
-                
         return f"<{self.tag}{self.props_to_html()}>{''.join([child.to_html() for child in self.children])}</{self.tag}>"
 

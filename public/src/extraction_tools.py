@@ -41,3 +41,8 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
         # then append the new textnode to the return nodes list.
         
     return return_nodes
+
+#make a seperate function for each delimter type.
+#Images split delimiter 
+#Links split delimiter
+#Consider a helper function to execute common code.
