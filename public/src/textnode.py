@@ -9,6 +9,7 @@ class TextType(Enum):
     CODE = "code"
     LINK = "link"
     IMAGE = "image"
+    HEADER = "header"
 
 class TextNode:
     def __init__(self, text, text_type: TextType, url=None):
@@ -47,4 +48,6 @@ def text_node_to_html(text_node):
             return LeafNode(tag="a", value=text_node.text, props={"href": text_node.url})
         case TextType.IMAGE:
             return LeafNode(tag="img", value="", props={"src": text_node.url, "alt": text_node.text})
+        case _:
+            raise ValueError("text_type must be a valid TextType enum.")
         

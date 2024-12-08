@@ -36,10 +36,11 @@ class TestTextNode(unittest.TestCase):
 		node_codetxt = TextNode(text_type=TextType.CODE, text="This is some CODE text")
 		node_linktxt = TextNode(text_type=TextType.LINK, text="This is a LINK", url="www.google.com")
 		node_imgtxt = TextNode(text_type=TextType.IMAGE, text="This is an IMAGE", url="https://cdn1.vox-cdn.com/uploads/chorus_asset/file/4019352/september-1st-doodle-do-not-translate-5078286822539264-hp.0.gif")
-		
+		node_headertxt = TextNode(text_type=TextType.HEADER, text="This is some text")
 		with self.assertRaises(ValueError, msg=None):
 			TextNode(text_type="header", text="This is some text")
-		
+			text_node_to_html(node_headertxt).to_html()
+
 		self.assertEqual(text_node_to_html(node_normtxt).to_html(), "This is some text")
 		self.assertEqual(text_node_to_html(node_boldtxt).to_html(), "<b>This is some BOLD text</b>")
 		self.assertEqual(text_node_to_html(node_italictxt).to_html(), "<i>This is some ITALIC text</i>")
