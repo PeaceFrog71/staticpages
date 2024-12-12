@@ -51,8 +51,29 @@ def split_nodes_image(old_nodes):
             new_nodes.append(this_node)
         else:
             images = extract_markdown_images(this_node.text);
-    for image in images:
-        new_nodes = split_nodes_delimiter(old_nodes, image, TextType.IMAGE)
+            num_images = images.__len__()
+            if num_images == 0:
+                new_nodes.append(this_node)
+            else:
+                index = 0
+                working_text = this_node.text
+                while (index < num_images) :
+                    image = images[index] 
+                    image_mask = f"![{image[0]}]({image[1]})"
+                    split_text = working_text.split(image_mask, 1)  
+                    
+                    if split_text[0] != "":
+                        new_nodes.append(TextNode(split_text[0], TextType.TEXT))
+                    new_nodes.append(TextNode(image[0], TextType.IMAGE, image[1]))
+                    if split_text[1] != "":
+                        working_text = split_text[1]
+                        if (index == num_images - 1): 
+                            new_nodes.append(TextNode(working_text, TextType.TEXT))
+                    
+                    index += 1
+
+
+    return new_nodes
 
 
 
