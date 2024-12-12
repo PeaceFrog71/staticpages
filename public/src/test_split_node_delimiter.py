@@ -94,32 +94,10 @@ class TestSplitNodeDelimiter(unittest.TestCase):
         old_nodes = []
         result = split_nodes_image(old_nodes)
         self.assertEqual(result, []) 
-           
+
     def test_split_nodes_image(self):
         text_type_text = TextType.TEXT
         text_type_input = TextType.IMAGE
         input_node = TextNode("This is text with an image ![sunset](https://www.boot.dev/sunset.jpg) and ![sunrise](https://www.boot.dev/sunrise.jpg)", text_type_text)
         split_nodes = split_nodes_image([input_node])
-        """self.assertEqual(split_nodes_image([input_node]),
-        [
-            TextNode("This is text with a link ", text_type_text),
-            TextNode("to boot dev", text_type_input, "https://www.boot.dev"),
-            TextNode(" and ", text_type_input),
-            TextNode(
-                "to youtube", text_type_input, "https://www.youtube.com/@bootdotdev"
-            ),
-        ])"""
-    """ def test_split_nodes_link(self):
-        text_type_text = "text"
-        text_type_input = "link"
-        input_node = TextNode("This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)", text_type_text)
         
-        self.assertEqual(split_nodes_link([input_node]),
-        [
-            TextNode("This is text with a link ", text_type_text),
-            TextNode("to boot dev", text_type_input, "https://www.boot.dev"),
-            TextNode(" and ", text_type_text),
-            TextNode(
-                "to youtube", text_type_input, "https://www.youtube.com/@bootdotdev"
-            ),
-        ]) """
