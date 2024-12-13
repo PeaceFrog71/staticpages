@@ -47,6 +47,10 @@ class TestTextNode(unittest.TestCase):
 		self.assertEqual(text_node_to_html(node_codetxt).to_html(), "<code>This is some CODE text</code>")
 		self.assertEqual(text_node_to_html(node_linktxt).to_html(), "<a href=\"www.google.com\">This is a LINK</a>")
 		self.assertEqual(text_node_to_html(node_imgtxt).to_html(), "<img src=\"https://cdn1.vox-cdn.com/uploads/chorus_asset/file/4019352/september-1st-doodle-do-not-translate-5078286822539264-hp.0.gif\" alt=\"This is an IMAGE\"></img>")
+
+	# Testing Text to TextNodes Function
+	def test_text_to_textnodes(self):
+		pass
   
 if __name__ == "__main__":
     unittest.main()
