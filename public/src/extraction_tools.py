@@ -1,6 +1,6 @@
 import re
 from textnode import *
-
+from text_types import *
 
 
 
@@ -96,17 +96,31 @@ def split_nodes_link(old_nodes):
                     
                     if split_text[0] != "":
                         new_nodes.append(TextNode(split_text[0], TextType.TEXT))
-                    new_nodes.append(TextNode(link[0], TextType.IMAGE, link[1]))
+                    new_nodes.append(TextNode(link[0], TextType.LINK, link[1]))
                     if split_text[1] != "":
                         working_text = split_text[1]
                         if (index == num_links - 1): 
                             new_nodes.append(TextNode(working_text, TextType.TEXT))
                     
                     index += 1
-
-
     return new_nodes
 
 
-#Links split delimiter
-#Consider a helper function to execute common code.
+        
+def text_to_textnodes(text):
+    first_text = TextNode(text, TextType.TEXT)
+    initial_list = [first_text]
+    """Split in this order:
+        1. Code blocks (to protect their contents)
+        2. Images (most specific with !)
+        3. Links
+        4. Bold (**)
+        5. Italic (*) 
+    """
+    codeblocks_list = split_nodes_delimiter(initial_list, "`", TextType.CODE)
+    images_list = split_nodes_image(codeblocks_list)
+    links_list = split_nodes_link(images_list)
+    bold_list = split_nodes_delimiter(links_list, "**", TextType.BOLD)
+    italic_list = split_nodes_delimiter(bold_list, "*", TextType.ITALIC)
+
+    return italic_list
