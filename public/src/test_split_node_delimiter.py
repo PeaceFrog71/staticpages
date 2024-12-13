@@ -1,6 +1,6 @@
 import unittest
 from textnode import TextNode, TextType, LeafNode
-from extraction_tools import split_nodes_delimiter, split_nodes_image
+from extraction_tools import split_nodes_delimiter, split_nodes_image, split_nodes_link
 
 
 class TestSplitNodeDelimiter(unittest.TestCase):
@@ -56,6 +56,8 @@ class TestSplitNodeDelimiter(unittest.TestCase):
         ]
         
         self.assertEqual(split_nodes_delimiter(old_nodes=[input_text], delimiter=delimiter, text_type=text_type_input), expected_output)
+
+    #Test Split Nodes Image
     def setUp(self):
         self.text_node = TextNode("example", TextType.TEXT)
         self.bold_node = TextNode("bold text", TextType.BOLD)
@@ -95,9 +97,36 @@ class TestSplitNodeDelimiter(unittest.TestCase):
         result = split_nodes_image(old_nodes)
         self.assertEqual(result, []) 
 
-    def test_split_nodes_image(self):
-        text_type_text = TextType.TEXT
-        text_type_input = TextType.IMAGE
-        input_node = TextNode("This is text with an image ![sunset](https://www.boot.dev/sunset.jpg) and ![sunrise](https://www.boot.dev/sunrise.jpg)", text_type_text)
-        split_nodes = split_nodes_image([input_node])
-        
+    
+    #Test Split Nodes Links
+
+    def test_split_nodes_link_no_links(self):
+            old_nodes = [self.text_node, self.bold_node, self.italic_node]
+            result = split_nodes_link(old_nodes)
+            self.assertEqual(result, old_nodes)
+
+    def test_split_nodes_link_with_links(self):
+        old_nodes = [self.text_node, self.link_node, self.bold_node]
+        result = split_nodes_link(old_nodes)
+        expected = [
+            self.text_node,
+            TextNode("link text", TextType.LINK, url="http://example.com"),
+            self.bold_node
+        ]
+        self.assertEqual(result, expected)
+
+    def test_split_nodes_link_multiple_links(self):
+        second_link_node = TextNode("link text2", TextType.LINK, url="http://example2.com")
+        old_nodes = [self.link_node, self.text_node, second_link_node]
+        result = split_nodes_link(old_nodes)
+        expected = [
+            TextNode("link text", TextType.LINK, url="http://example.com"),
+            self.text_node,
+            TextNode("link text2", TextType.LINK, url="http://example2.com")
+        ]
+        self.assertEqual(result, expected)
+
+    def test_split_nodes_link_empty_list(self):
+        old_nodes = []
+        result = split_nodes_link(old_nodes)
+        self.assertEqual(result, []) 

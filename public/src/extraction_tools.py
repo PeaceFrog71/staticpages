@@ -75,7 +75,37 @@ def split_nodes_image(old_nodes):
 
     return new_nodes
 
+def split_nodes_link(old_nodes):
+    new_nodes = []
+    links = []
+    for this_node in old_nodes:
+        if (this_node.text_type != TextType.TEXT):
+            new_nodes.append(this_node)
+        else:
+            links = extract_markdown_links(this_node.text);
+            num_links = links.__len__()
+            if num_links == 0:
+                new_nodes.append(this_node)
+            else:
+                index = 0
+                working_text = this_node.text
+                while (index < num_links) :
+                    link = links[index] 
+                    link_mask = f"[{link[0]}]({link[1]})"
+                    split_text = working_text.split(link_mask, 1)  
+                    
+                    if split_text[0] != "":
+                        new_nodes.append(TextNode(split_text[0], TextType.TEXT))
+                    new_nodes.append(TextNode(link[0], TextType.IMAGE, link[1]))
+                    if split_text[1] != "":
+                        working_text = split_text[1]
+                        if (index == num_links - 1): 
+                            new_nodes.append(TextNode(working_text, TextType.TEXT))
+                    
+                    index += 1
 
+
+    return new_nodes
 
 
 #Links split delimiter
