@@ -21,7 +21,7 @@ class TestSplitNodeDelimiter(unittest.TestCase):
         delimiter = "**"
         text_type_input = TextType.TEXT
         text_type_text = TextType.TEXT
-        input_text = input_text = TextNode("This is a test string. It contains **a delimiter** that will be split into two nodes.", text_type=text_type_text)
+        input_text = TextNode("This is a test string. It contains **a delimiter** that will be split into two nodes.", text_type=text_type_text)
         expected_output = [
             TextNode("This is a test string. It contains ", text_type_text),
             TextNode("a delimiter", text_type_input),
@@ -34,7 +34,7 @@ class TestSplitNodeDelimiter(unittest.TestCase):
         delimiter = "a"
         text_type_input = TextType.LINK
         text_type_text = TextType.TEXT
-        input_text = input_text = TextNode("This is a test string. It contains **a delimiter** that will be split into two nodes.", text_type=text_type_text)
+        input_text = TextNode("This is a test string. It contains **a delimiter** that will be split into two nodes.", text_type=text_type_text)
         expected_output = [
             TextNode("This is ", text_type_text),
             TextNode(" test string. It cont", text_type_input),
