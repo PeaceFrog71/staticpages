@@ -1,5 +1,7 @@
 from htmlnode import LeafNode
 from enum import Enum
+from extraction_tools import *
+from textnode import *
 
 class TextType(Enum):
     #Text types
@@ -49,5 +51,4 @@ def text_node_to_html(text_node):
         case TextType.IMAGE:
             return LeafNode(tag="img", value="", props={"src": text_node.url, "alt": text_node.text})
         case _:
-            raise ValueError("text_type must be a valid TextType enum.")
-        
+            raise ValueError("text_type must be a valid TextType enum.")  
