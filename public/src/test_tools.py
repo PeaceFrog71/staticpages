@@ -2,7 +2,7 @@ import unittest
 from textnode import TextNode, TextType
 from tools import *
 
-class TestSplitNodeDelimiter(unittest.TestCase):
+class TestingTools(unittest.TestCase):
     '''tools used to extract text for the purpose of creating various HTML Nodes'''
     def test_image(self):
         '''extracts image data from raw text strings'''
@@ -126,6 +126,23 @@ class TestSplitNodeDelimiter(unittest.TestCase):
         self.input_text3 = "This is text with an italic word and a code block and an obi wan image(https://i.imgur.com/fJRm4Vk.jpeg) and a link(https://boot.dev)"
         self.output_expected3 = [TextNode("This is text with an italic word and a code block and an obi wan image(https://i.imgur.com/fJRm4Vk.jpeg) and a link(https://boot.dev)", TextType.TEXT)]
 
+        # Block testing variables
+        input_block = """# This is a heading
+
+This is a paragraph of text. It has some **bold** and *italic* words inside of it.
+
+* This is the first list item in a list block
+* This is a list item
+* This is another list item"""
+
+        output_block = [
+            "# This is a heading",
+            "This is a paragraph of text. It has some **bold** and *italic* words inside of it.",
+            """* This is the first list item in a list block
+* This is a list item
+* This is another list item""",
+        ]
+
     def test_split_nodes_image_no_images(self):
         old_nodes = [self.text_node, self.bold_node, self.italic_node]
         result = split_nodes_image(old_nodes)
@@ -197,4 +214,7 @@ class TestSplitNodeDelimiter(unittest.TestCase):
         self.assertEqual(text_to_textnodes(self.input_text1), self.output_expected1)
         self.assertEqual(text_to_textnodes(self.input_text2), self.output_expected2)
         self.assertEqual(text_to_textnodes(self.input_text3), self.output_expected3)
-  
+    # Testing block splitter
+
+    def test_markdown_to_blocks(self):
+        self.assertEqual(markdown_to_blocks(self.block_input, self.block_output))
