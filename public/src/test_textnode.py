@@ -31,7 +31,6 @@ class TestTextNode(unittest.TestCase):
 		self.assertNotEqual(node.url, node3.url)
 
 	def test_text_html(self):
-		print("\nTesting text node to html function")
 		node_normtxt = TextNode(text_type=TextType.TEXT, text="This is some text")
 		node_boldtxt = TextNode(text_type=TextType.BOLD, text="This is some BOLD text")
 		node_italictxt = TextNode(text_type=TextType.ITALIC, text="This is some ITALIC text")
