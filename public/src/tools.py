@@ -142,6 +142,13 @@ def text_node_to_html(text_node):
         
 # Block handling tools
 def markdown_to_blocks(markdown):
+    if markdown is None:
+        return []
     markdown_input = markdown
-    markdown_output = markdown_input.splitline()
+    markdown_input = markdown_input.split('\n\n')
+    markdown_output = []
+    for item in markdown_input:
+        item.strip()
+        if item != "":
+            markdown_output.append(item)
     return markdown_output

@@ -6,7 +6,6 @@ class TestingTools(unittest.TestCase):
     '''tools used to extract text for the purpose of creating various HTML Nodes'''
     def test_image(self):
         '''extracts image data from raw text strings'''
-        print("testing image extraction...")
         text_image =  """This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif)
         and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"""
         expected_output = [("rick roll", "https://i.imgur.com/aKaOqIh.gif"),
@@ -15,7 +14,6 @@ class TestingTools(unittest.TestCase):
 
     def test_link(self):
         '''extracts link data from raw text strings'''
-        print("testing link extraction...")
         text_link = """This is text with a link [to boot dev](https://www.boot.dev)
         and [to youtube](https://www.youtube.com/@bootdotdev)"""
         output = extract_markdown_links(text_link)
@@ -25,7 +23,6 @@ class TestingTools(unittest.TestCase):
         
     def test_link2(self):
         '''extracts no link data from raw text strings'''
-        print("testing link extraction...")
         text_link = """This is text with a link to nothing"""
         expected_output = []
         self.assertEqual(extract_markdown_links(text_link), expected_output)
@@ -127,7 +124,7 @@ class TestingTools(unittest.TestCase):
         self.output_expected3 = [TextNode("This is text with an italic word and a code block and an obi wan image(https://i.imgur.com/fJRm4Vk.jpeg) and a link(https://boot.dev)", TextType.TEXT)]
 
         # Block testing variables
-        input_block = """# This is a heading
+        self.input_block = """# This is a heading
 
 This is a paragraph of text. It has some **bold** and *italic* words inside of it.
 
@@ -135,7 +132,7 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
 * This is a list item
 * This is another list item"""
 
-        output_block = [
+        self.output_block = [
             "# This is a heading",
             "This is a paragraph of text. It has some **bold** and *italic* words inside of it.",
             """* This is the first list item in a list block
@@ -217,4 +214,10 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
     # Testing block splitter
 
     def test_markdown_to_blocks(self):
-        self.assertEqual(markdown_to_blocks(self.block_input, self.block_output))
+        self.assertEqual(markdown_to_blocks(self.input_block), self.output_block)
+    
+    def test_markdown_to_blocks_empty(self):
+        self.assertEqual(markdown_to_blocks(""), [])
+
+    def test_markdown_to_blocks_oneblock(self):
+        self.assertEqual(markdown_to_blocks(""), [])
