@@ -148,7 +148,7 @@ def markdown_to_blocks(markdown):
     markdown_input = markdown_input.split('\n\n')
     markdown_output = []
     for item in markdown_input:
-        item.strip()
+        item = item.strip()
         if item != "":
             markdown_output.append(item)
     return markdown_output

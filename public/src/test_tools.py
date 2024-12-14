@@ -220,4 +220,7 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
         self.assertEqual(markdown_to_blocks(""), [])
 
     def test_markdown_to_blocks_oneblock(self):
-        self.assertEqual(markdown_to_blocks(""), [])
+        self.assertEqual(markdown_to_blocks("Exploration fuels curiosity, sparking innovation and growth. Each discovery, no matter how small, shapes our understanding of the world and our place within it."), ["Exploration fuels curiosity, sparking innovation and growth. Each discovery, no matter how small, shapes our understanding of the world and our place within it."])
+
+    def test_markdown_to_blocks_oneblock(self):
+        self.assertEqual(markdown_to_blocks("Exploration fuels curiosity, sparking innovation and growth. \n\nEach discovery, no matter how small, shapes our understanding of the world and our place within it."), ["Exploration fuels curiosity, sparking innovation and growth.", "Each discovery, no matter how small, shapes our understanding of the world and our place within it."])
