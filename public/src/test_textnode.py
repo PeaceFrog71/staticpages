@@ -1,5 +1,7 @@
 import unittest
-from textnode import TextType, TextNode, text_node_to_html
+from textnode import TextType, TextNode
+from extraction_tools import *
+
 
 class TestTextNode(unittest.TestCase):
 	def test_eq(self):

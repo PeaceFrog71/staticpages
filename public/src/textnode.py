@@ -1,7 +1,5 @@
-from htmlnode import LeafNode
+
 from enum import Enum
-from extraction_tools import *
-from textnode import *
 
 class TextType(Enum):
     #Text types
@@ -35,20 +33,6 @@ class TextNode:
 
     def __str__(self):
         return f"TextNode(\"{self.text}\", {self.text_type}, {self.url})"
+
+
     
-def text_node_to_html(text_node):
-    match text_node.text_type:
-        case TextType.TEXT:
-            return LeafNode(value=text_node.text)
-        case TextType.BOLD:
-            return LeafNode(tag="b", value=text_node.text)
-        case TextType.ITALIC:
-            return LeafNode(tag="i", value=text_node.text)
-        case TextType.CODE:
-            return LeafNode(tag="code", value=text_node.text)
-        case TextType.LINK:
-            return LeafNode(tag="a", value=text_node.text, props={"href": text_node.url})
-        case TextType.IMAGE:
-            return LeafNode(tag="img", value="", props={"src": text_node.url, "alt": text_node.text})
-        case _:
-            raise ValueError("text_type must be a valid TextType enum.")  

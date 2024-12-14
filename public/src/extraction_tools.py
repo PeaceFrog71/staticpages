@@ -1,8 +1,5 @@
 import re
-from textnode import *
-from text_types import *
-
-
+from textnode import TextNode, TextType
 
 def extract_markdown_images(text):
     if text is None:
@@ -106,7 +103,7 @@ def split_nodes_link(old_nodes):
     return new_nodes
 
 
-        
+
 def text_to_textnodes(text):
     first_text = TextNode(text, TextType.TEXT)
     initial_list = [first_text]
@@ -123,4 +120,22 @@ def text_to_textnodes(text):
     bold_list = split_nodes_delimiter(links_list, "**", TextType.BOLD)
     italic_list = split_nodes_delimiter(bold_list, "*", TextType.ITALIC)
 
-    return italic_list
+    return italic_list       
+
+def text_node_to_html(text_node):
+    from htmlnode import LeafNode #Importing here to avoid circular dependancy
+    match text_node.text_type:
+        case TextType.TEXT:
+            return LeafNode(value=text_node.text)
+        case TextType.BOLD:
+            return LeafNode(tag="b", value=text_node.text)
+        case TextType.ITALIC:
+            return LeafNode(tag="i", value=text_node.text)
+        case TextType.CODE:
+            return LeafNode(tag="code", value=text_node.text)
+        case TextType.LINK:
+            return LeafNode(tag="a", value=text_node.text, props={"href": text_node.url})
+        case TextType.IMAGE:
+            return LeafNode(tag="img", value="", props={"src": text_node.url, "alt": text_node.text})
+        case _:
+            raise ValueError("text_type must be a valid TextType enum.")  
