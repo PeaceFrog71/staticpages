@@ -1,6 +1,6 @@
 import unittest
 from textnode import TextType, TextNode
-from extraction_tools import *
+from tools import *
 
 
 class TestTextNode(unittest.TestCase):
