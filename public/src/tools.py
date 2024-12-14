@@ -139,3 +139,9 @@ def text_node_to_html(text_node):
             return LeafNode(tag="img", value="", props={"src": text_node.url, "alt": text_node.text})
         case _:
             raise ValueError("text_type must be a valid TextType enum.")  
+        
+# Block handling tools
+def markdown_to_blocks(markdown):
+    markdown_input = markdown
+    markdown_output = markdown_input.splitline()
+    return markdown_output
