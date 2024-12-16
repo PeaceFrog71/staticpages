@@ -224,3 +224,18 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
 
     def test_markdown_to_blocks_oneblock(self):
         self.assertEqual(markdown_to_blocks("Exploration fuels curiosity, sparking innovation and growth. \n\nEach discovery, no matter how small, shapes our understanding of the world and our place within it."), ["Exploration fuels curiosity, sparking innovation and growth.", "Each discovery, no matter how small, shapes our understanding of the world and our place within it."])
+
+    # Testing block type assignment
+    def test_block_type_assign_header(self):
+        block_header = " This is a header block."
+        self.assertEqual(block_to_blocktype(block_header), TextType.PARAGRAPH)
+        
+        for i in range(1, 7):
+            block_header = ("#"*i) + " This is a header block."
+            self.assertEqual(block_to_blocktype(block_header), TextType.HEADER)
+
+        block_header = ("#"*7) + " This is not a header block."
+        self.assertEqual(block_to_blocktype(block_header), TextType.PARAGRAPH)
+    
+    def test_block_type_assign_code(self):
+        pass

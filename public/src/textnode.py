@@ -9,6 +9,10 @@ class TextType(Enum):
     LINK = "link"
     IMAGE = "image"
     HEADER = "header"
+    QUOTE = "quote"
+    PARAGRAPH = "paragraph"
+    UL = "unordered list"
+    OL = "ordered list"
 
 class TextNode:
     def __init__(self, text, text_type: TextType, url=None):
