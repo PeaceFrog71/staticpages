@@ -155,21 +155,21 @@ def markdown_to_blocks(markdown):
 
 def block_to_blocktype(markdown):
     header_pattern = r"^#{1,6} "
-    code_pattern = r"^```.*```$"
+    code_pattern = r"^```[\s\S]*?```$"
     quote_pattern = r"^(> .*(\n|$))+"
     unlist_pattern = r"^(\* |\- ).*(\n|$)+"
     orlist_pattern = r"^(\d+)\. .*$" #doesnt check for numerical order. Use a loop to validate numerical order
 
-    patterns = [(header_pattern, TextType.HEADER) , (code_pattern, TextType.CODE), (quote_pattern, TextType.QUOTE), (unlist_pattern, TextType.UL), (orlist_pattern, TextType.OL)]
+    patterns = [(quote_pattern, TextType.QUOTE), (code_pattern, TextType.CODE), (header_pattern, TextType.HEADER), (unlist_pattern, TextType.UL), (orlist_pattern, TextType.OL)]
 
     for pattern, text_type in patterns:
-        if re.match(pattern, markdown):
+        if re.match(pattern, markdown, re.DOTALL):
             if pattern != orlist_pattern:
                 return text_type
             else:
-                validate_ordered_list(markdown)
-        else:
-            return TextType.PARAGRAPH
+                return validate_ordered_list(markdown)
+
+    return TextType.PARAGRAPH
 
 def validate_ordered_list(block):
     # Pattern to match a line with a number, dot, and space
@@ -180,11 +180,11 @@ def validate_ordered_list(block):
     for line in lines:
         match = re.match(pattern, line)
         if not match:
-            return False  # Line does not match the pattern
+            return TextType.PARAGRAPH  # Line does not match the pattern
         
         number = int(match.group(1))
         if number != expected_number:
-            return False  # Number is not in the expected sequence
+            return TextType.PARAGRAPH  # Number is not in the expected sequence
         
         expected_number += 1  # Increment expected number for the next line
     

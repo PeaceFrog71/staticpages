@@ -229,7 +229,7 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
     def test_block_type_assign_header(self):
         block_header = " This is a header block."
         self.assertEqual(block_to_blocktype(block_header), TextType.PARAGRAPH)
-        
+
         for i in range(1, 7):
             block_header = ("#"*i) + " This is a header block."
             self.assertEqual(block_to_blocktype(block_header), TextType.HEADER)
@@ -238,4 +238,21 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
         self.assertEqual(block_to_blocktype(block_header), TextType.PARAGRAPH)
     
     def test_block_type_assign_code(self):
-        pass
+        block_header = "### Header"
+        block_code = "```10 x := 10\nprint(\"this is x:\", x)\nreturn void```"
+        block_quote = "> Quote line 1\n> Quote line 2"
+        block_unordered_list = "* Item 1\n- Item 2"
+        block_ordered_list = "1. First item\n2. Second item\n3. Third Item=\"charm\""
+        block_invalid_ol = "1. First item\n3. Wrong item"
+        block_paragraph = "This is just a paragraph."
+
+        # Test Cases
+        assert block_to_blocktype(block_header) == TextType.HEADER
+        assert block_to_blocktype(block_code) == TextType.CODE
+        assert block_to_blocktype(block_quote) == TextType.QUOTE
+        assert block_to_blocktype(block_unordered_list) == TextType.UL
+        assert block_to_blocktype(block_ordered_list) == TextType.OL
+        assert block_to_blocktype(block_invalid_ol) == TextType.PARAGRAPH
+        assert block_to_blocktype(block_paragraph) == TextType.PARAGRAPH
+
+        print("All tests passed!")
