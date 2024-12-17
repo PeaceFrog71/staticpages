@@ -246,7 +246,7 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
         block_invalid_ol = "1. First item\n3. Wrong item"
         block_paragraph = "This is just a paragraph."
 
-        # Test Cases
+        # Test Cases for block type assignment
         assert block_to_blocktype(block_header) == TextType.HEADER
         assert block_to_blocktype(block_code) == TextType.CODE
         assert block_to_blocktype(block_quote) == TextType.QUOTE
@@ -255,4 +255,8 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
         assert block_to_blocktype(block_invalid_ol) == TextType.PARAGRAPH
         assert block_to_blocktype(block_paragraph) == TextType.PARAGRAPH
 
-        print("All tests passed!")
+    # Test cases for Markdown to HTML 
+    def test_markdown_to_html(self):
+        markdown = ""
+        markdown_to_html(markdown)
+
