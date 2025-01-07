@@ -265,3 +265,10 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
         html_parent = ParentNode(tag="html", children=[body_parent])
         
         self.assertEqual(markdown_to_html_node(markdown), html_parent)
+
+        # Test Case 2: Simple Markdown
+        markdown = "# Header"
+        body_parent = ParentNode(tag="body", children=[LeafNode(tag="h1", value="Header")])
+        html_parent = ParentNode(tag="html", children=[body_parent])
+        self.assertEqual(markdown_to_html_node(markdown), html_parent)
+        
