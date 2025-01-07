@@ -49,4 +49,3 @@ class ParentNode(HTMLNode):
         
     def to_html(self):
         return f"<{self.tag}{self.props_to_html()}>{''.join([child.to_html() for child in self.children])}</{self.tag}>"
-

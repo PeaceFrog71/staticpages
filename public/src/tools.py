@@ -1,4 +1,5 @@
 import re
+from htmlnode import ParentNode
 from textnode import TextNode, TextType
 
 def extract_markdown_images(text):
@@ -189,3 +190,9 @@ def validate_ordered_list(block):
         expected_number += 1  # Increment expected number for the next line
     
     return TextType.OL
+
+
+def markdown_to_html_node(markdown):
+    body_parent = ParentNode(tag="body", children=[])
+    html_parent = ParentNode(tag="html", children=[body_parent])
+    return html_parent

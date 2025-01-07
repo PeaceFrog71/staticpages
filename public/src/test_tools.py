@@ -255,8 +255,13 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
         assert block_to_blocktype(block_invalid_ol) == TextType.PARAGRAPH
         assert block_to_blocktype(block_paragraph) == TextType.PARAGRAPH
 
-    # Test cases for Markdown to HTML 
-    def test_markdown_to_html(self):
+    # Test cases for Markdown to HTML node, returns single hmtl node with html tags for text found in markdown
+    def test_markdown_to_html_node(self):
+        
+        #Test Cases for Markdown to HTML Node
+        # Test Case 1: Empty Markdown
         markdown = ""
-        markdown_to_html(markdown)
-
+        body_parent = ParentNode(tag="body", children=[])
+        html_parent = ParentNode(tag="html", children=[body_parent])
+        
+        self.assertEqual(markdown_to_html_node(markdown), html_parent)
