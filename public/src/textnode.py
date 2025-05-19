@@ -1,23 +1,23 @@
 from enum import Enum
 
-class TextType(Enum):
-    #Text types
+class BlockType(Enum):
+    #Block types
     TEXT = "text"
     BOLD = "bold"
     ITALIC = "italic"
-    CODE = "code"
+    code = "code"
     LINK = "link"
     IMAGE = "image"
-    HEADER = "header"
-    QUOTE = "quote"
-    PARAGRAPH = "paragraph"
-    UL = "unordered list"
-    OL = "ordered list"
+    heading = "heading"
+    quote = "quote"
+    paragraph = "paragraph"
+    unordered_list = "unordered list"
+    ordered_list = "ordered list"
 
 class TextNode:
-    def __init__(self, text, text_type: TextType, url=None):
-        if not isinstance(text_type, TextType):
-            raise ValueError("text_type must be an instance of a TextType enum")
+    def __init__(self, text, text_type: BlockType, url=None):
+        if not isinstance(text_type, BlockType):
+            raise ValueError("text_type must be an instance of a BlockType enum")
         self.text = text
         self.text_type = text_type
         self.url = url

@@ -1,5 +1,5 @@
 import unittest
-from textnode import TextNode, TextType
+from textnode import TextNode, BlockType
 from tools import *
 
 class TestingTools(unittest.TestCase):
@@ -33,8 +33,8 @@ class TestingTools(unittest.TestCase):
 
     def test_split_nodes_delimiter(self):
         delimiter = "*"
-        text_type_input = TextType.BOLD
-        text_type_text = TextType.TEXT
+        text_type_input = BlockType.BOLD
+        text_type_text = BlockType.TEXT
         input_text = TextNode("This is a test string. It contains *a delimiter* that will be split into two nodes.", text_type=text_type_text)
         expected_output = [
             TextNode(text="This is a test string. It contains ", text_type=text_type_text),
@@ -46,8 +46,8 @@ class TestingTools(unittest.TestCase):
 
     def test_split_nodes_delimiter2(self):
         delimiter = "**"
-        text_type_input = TextType.TEXT
-        text_type_text = TextType.TEXT
+        text_type_input = BlockType.TEXT
+        text_type_text = BlockType.TEXT
         input_text = TextNode("This is a test string. It contains **a delimiter** that will be split into two nodes.", text_type=text_type_text)
         expected_output = [
             TextNode("This is a test string. It contains ", text_type_text),
@@ -59,8 +59,8 @@ class TestingTools(unittest.TestCase):
         
     def test_split_nodes_delimiter3(self):
         delimiter = "a"
-        text_type_input = TextType.LINK
-        text_type_text = TextType.TEXT
+        text_type_input = BlockType.LINK
+        text_type_text = BlockType.TEXT
         input_text = TextNode("This is a test string. It contains **a delimiter** that will be split into two nodes.", text_type=text_type_text)
         expected_output = [
             TextNode("This is ", text_type_text),
@@ -74,8 +74,8 @@ class TestingTools(unittest.TestCase):
         
     def test_split_nodes_delimiter4(self):
         delimiter = "**"
-        text_type_input = TextType.TEXT
-        text_type_text = TextType.TEXT
+        text_type_input = BlockType.TEXT
+        text_type_text = BlockType.TEXT
         input_text = TextNode("**a delimiter**This is a test string. It contains that will be split into two nodes.", text_type=text_type_text)
         expected_output = [
             TextNode("a delimiter", text_type_input),
@@ -86,42 +86,42 @@ class TestingTools(unittest.TestCase):
 
     #Test Split Nodes Image
     def setUp(self):
-        self.text_node = TextNode("example", TextType.TEXT)
-        self.bold_node = TextNode("bold text", TextType.BOLD)
-        self.italic_node = TextNode("italic text", TextType.ITALIC)
-        self.code_node = TextNode("code text", TextType.CODE)
-        self.link_node = TextNode("link text", TextType.LINK, url="http://example.com")
-        self.image_node = TextNode("alt text", TextType.IMAGE, url="http://image.com/image.jpg")
+        self.text_node = TextNode("example", BlockType.TEXT)
+        self.bold_node = TextNode("bold text", BlockType.BOLD)
+        self.italic_node = TextNode("italic text", BlockType.ITALIC)
+        self.code_node = TextNode("code text", BlockType.code)
+        self.link_node = TextNode("link text", BlockType.LINK, url="http://example.com")
+        self.image_node = TextNode("alt text", BlockType.IMAGE, url="http://image.com/image.jpg")
         self.input_text0 = ""
         self.output_expected0 = []
         self.input_text1 = "This is **text** with an *italic* word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
         self.output_expected1 = [
-        TextNode("This is ", TextType.TEXT),
-        TextNode("text", TextType.BOLD),
-        TextNode(" with an ", TextType.TEXT),
-        TextNode("italic", TextType.ITALIC),
-        TextNode(" word and a ", TextType.TEXT),
-        TextNode("code block", TextType.CODE),
-        TextNode(" and an ", TextType.TEXT),
-        TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
-        TextNode(" and a ", TextType.TEXT),
-        TextNode("link", TextType.LINK, "https://boot.dev"),
+        TextNode("This is ", BlockType.TEXT),
+        TextNode("text", BlockType.BOLD),
+        TextNode(" with an ", BlockType.TEXT),
+        TextNode("italic", BlockType.ITALIC),
+        TextNode(" word and a ", BlockType.TEXT),
+        TextNode("code block", BlockType.code),
+        TextNode(" and an ", BlockType.TEXT),
+        TextNode("obi wan image", BlockType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+        TextNode(" and a ", BlockType.TEXT),
+        TextNode("link", BlockType.LINK, "https://boot.dev"),
         ]
         self.input_text2 = "[link](https://boot.dev) and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a `code block` word and an *italic* with a **text** This is"
         self.output_expected2 = [
-        TextNode("link", TextType.LINK, "https://boot.dev"),
-        TextNode(" and an ", TextType.TEXT),
-        TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
-        TextNode(" and a ", TextType.TEXT),
-        TextNode("code block", TextType.CODE),
-        TextNode(" word and an ", TextType.TEXT),
-        TextNode("italic", TextType.ITALIC),
-        TextNode(" with a ", TextType.TEXT),
-        TextNode("text", TextType.BOLD),
-        TextNode(" This is", TextType.TEXT),
+        TextNode("link", BlockType.LINK, "https://boot.dev"),
+        TextNode(" and an ", BlockType.TEXT),
+        TextNode("obi wan image", BlockType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+        TextNode(" and a ", BlockType.TEXT),
+        TextNode("code block", BlockType.code),
+        TextNode(" word and an ", BlockType.TEXT),
+        TextNode("italic", BlockType.ITALIC),
+        TextNode(" with a ", BlockType.TEXT),
+        TextNode("text", BlockType.BOLD),
+        TextNode(" This is", BlockType.TEXT),
         ]
         self.input_text3 = "This is text with an italic word and a code block and an obi wan image(https://i.imgur.com/fJRm4Vk.jpeg) and a link(https://boot.dev)"
-        self.output_expected3 = [TextNode("This is text with an italic word and a code block and an obi wan image(https://i.imgur.com/fJRm4Vk.jpeg) and a link(https://boot.dev)", TextType.TEXT)]
+        self.output_expected3 = [TextNode("This is text with an italic word and a code block and an obi wan image(https://i.imgur.com/fJRm4Vk.jpeg) and a link(https://boot.dev)", BlockType.TEXT)]
 
         # Block testing variables
         self.input_block = """# This is a heading
@@ -150,19 +150,19 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
         result = split_nodes_image(old_nodes)
         expected = [
             self.text_node,
-            TextNode("alt text", TextType.IMAGE, url="http://image.com/image.jpg"),
+            TextNode("alt text", BlockType.IMAGE, url="http://image.com/image.jpg"),
             self.bold_node
         ]
         self.assertEqual(result, expected)
 
     def test_split_nodes_image_multiple_images(self):
-        second_image_node = TextNode("second alt text", TextType.IMAGE, url="http://image.com/second.jpg")
+        second_image_node = TextNode("second alt text", BlockType.IMAGE, url="http://image.com/second.jpg")
         old_nodes = [self.image_node, self.text_node, second_image_node]
         result = split_nodes_image(old_nodes)
         expected = [
-            TextNode("alt text", TextType.IMAGE, url="http://image.com/image.jpg"),
+            TextNode("alt text", BlockType.IMAGE, url="http://image.com/image.jpg"),
             self.text_node,
-            TextNode("second alt text", TextType.IMAGE, url="http://image.com/second.jpg")
+            TextNode("second alt text", BlockType.IMAGE, url="http://image.com/second.jpg")
         ]
         self.assertEqual(result, expected)
 
@@ -184,19 +184,19 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
         result = split_nodes_link(old_nodes)
         expected = [
             self.text_node,
-            TextNode("link text", TextType.LINK, url="http://example.com"),
+            TextNode("link text", BlockType.LINK, url="http://example.com"),
             self.bold_node
         ]
         self.assertEqual(result, expected)
 
     def test_split_nodes_link_multiple_links(self):
-        second_link_node = TextNode("link text2", TextType.LINK, url="http://example2.com")
+        second_link_node = TextNode("link text2", BlockType.LINK, url="http://example2.com")
         old_nodes = [self.link_node, self.text_node, second_link_node]
         result = split_nodes_link(old_nodes)
         expected = [
-            TextNode("link text", TextType.LINK, url="http://example.com"),
+            TextNode("link text", BlockType.LINK, url="http://example.com"),
             self.text_node,
-            TextNode("link text2", TextType.LINK, url="http://example2.com")
+            TextNode("link text2", BlockType.LINK, url="http://example2.com")
         ]
         self.assertEqual(result, expected)
 
@@ -227,14 +227,14 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
 """     # Testing block type assignment
     def test_block_type_assign_header(self):
         block_header = " This is a header block."
-        self.assertEqual(block_to_blocktype(block_header), TextType.PARAGRAPH)
+        self.assertEqual(block_to_blocktype(block_header), BlockType.PARAGRAPH)
 
         for i in range(1, 7):
             block_header = ("#"*i) + " This is a header block."
-            self.assertEqual(block_to_blocktype(block_header), TextType.HEADER)
+            self.assertEqual(block_to_blocktype(block_header), BlockType.heading)
 
         block_header = ("#"*7) + " This is not a header block."
-        self.assertEqual(block_to_blocktype(block_header), TextType.PARAGRAPH)
+        self.assertEqual(block_to_blocktype(block_header), BlockType.PARAGRAPH)
     
     def test_block_type_assign_code(self):
         block_header = "### Header"
@@ -246,13 +246,13 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
         block_paragraph = "This is just a paragraph."
 
         # Test Cases for block type assignment
-        assert block_to_blocktype(block_header) == TextType.HEADER
-        assert block_to_blocktype(block_code) == TextType.CODE
-        assert block_to_blocktype(block_quote) == TextType.QUOTE
-        assert block_to_blocktype(block_unordered_list) == TextType.UL
-        assert block_to_blocktype(block_ordered_list) == TextType.OL
-        assert block_to_blocktype(block_invalid_ol) == TextType.PARAGRAPH
-        assert block_to_blocktype(block_paragraph) == TextType.PARAGRAPH """
+        assert block_to_blocktype(block_header) == BlockType.heading
+        assert block_to_blocktype(block_code) == BlockType.code
+        assert block_to_blocktype(block_quote) == BlockType.QUOTE
+        assert block_to_blocktype(block_unordered_list) == BlockType.UL
+        assert block_to_blocktype(block_ordered_list) == BlockType.OL
+        assert block_to_blocktype(block_invalid_ol) == BlockType.PARAGRAPH
+        assert block_to_blocktype(block_paragraph) == BlockType.PARAGRAPH """
 
 """     # Test cases for Markdown to HTML node, returns single hmtl node with html tags for text found in markdown
     def test_markdown_to_html_node(self):

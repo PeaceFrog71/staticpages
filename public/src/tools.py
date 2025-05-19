@@ -1,6 +1,6 @@
 import re
 from htmlnode import ParentNode
-from textnode import TextNode, TextType
+from textnode import TextNode, BlockType
 
 def extract_markdown_images(text):
     if text is None:
@@ -18,7 +18,7 @@ def extract_markdown_links(text):
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     return_nodes = []
     for working_node in old_nodes:
-        if working_node.text_type != TextType.TEXT:
+        if working_node.text_type != BlockType.TEXT:
             return_nodes.append(working_node)
             continue
 
@@ -32,7 +32,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
                 continue
             if i % 2 == 0:
                 # the odd elements will be the strings that will remain TEXT
-                return_nodes.append(TextNode(text_divided[i], TextType.TEXT))
+                return_nodes.append(TextNode(text_divided[i], BlockType.TEXT))
             else:
                 # the odd elements will be the delimited strings that should be converted to new type
                 # then append the new textnode to the return nodes list.
@@ -45,7 +45,7 @@ def split_nodes_image(old_nodes):
     new_nodes = []
     images = []
     for this_node in old_nodes:
-        if (this_node.text_type != TextType.TEXT):
+        if (this_node.text_type != BlockType.TEXT):
             new_nodes.append(this_node)
         else:
             images = extract_markdown_images(this_node.text);
@@ -61,12 +61,12 @@ def split_nodes_image(old_nodes):
                     split_text = working_text.split(image_mask, 1)  
                     
                     if split_text[0] != "":
-                        new_nodes.append(TextNode(split_text[0], TextType.TEXT))
-                    new_nodes.append(TextNode(image[0], TextType.IMAGE, image[1]))
+                        new_nodes.append(TextNode(split_text[0], BlockType.TEXT))
+                    new_nodes.append(TextNode(image[0], BlockType.IMAGE, image[1]))
                     if split_text[1] != "":
                         working_text = split_text[1]
                         if (index == num_images - 1): 
-                            new_nodes.append(TextNode(working_text, TextType.TEXT))
+                            new_nodes.append(TextNode(working_text, BlockType.TEXT))
                     
                     index += 1
 
@@ -77,7 +77,7 @@ def split_nodes_link(old_nodes):
     new_nodes = []
     links = []
     for this_node in old_nodes:
-        if (this_node.text_type != TextType.TEXT):
+        if (this_node.text_type != BlockType.TEXT):
             new_nodes.append(this_node)
         else:
             links = extract_markdown_links(this_node.text);
@@ -93,12 +93,12 @@ def split_nodes_link(old_nodes):
                     split_text = working_text.split(link_mask, 1)  
                     
                     if split_text[0] != "":
-                        new_nodes.append(TextNode(split_text[0], TextType.TEXT))
-                    new_nodes.append(TextNode(link[0], TextType.LINK, link[1]))
+                        new_nodes.append(TextNode(split_text[0], BlockType.TEXT))
+                    new_nodes.append(TextNode(link[0], BlockType.LINK, link[1]))
                     if split_text[1] != "":
                         working_text = split_text[1]
                         if (index == num_links - 1): 
-                            new_nodes.append(TextNode(working_text, TextType.TEXT))
+                            new_nodes.append(TextNode(working_text, BlockType.TEXT))
                     
                     index += 1
     return new_nodes
@@ -106,7 +106,7 @@ def split_nodes_link(old_nodes):
 
 
 def text_to_textnodes(text):
-    first_text = TextNode(text, TextType.TEXT)
+    first_text = TextNode(text, BlockType.TEXT)
     initial_list = [first_text]
     """Split in this order:
         1. Code blocks (to protect their contents)
@@ -115,31 +115,31 @@ def text_to_textnodes(text):
         4. Bold (**)
         5. Italic (*) 
     """
-    codeblocks_list = split_nodes_delimiter(initial_list, "`", TextType.CODE)
+    codeblocks_list = split_nodes_delimiter(initial_list, "`", BlockType.code)
     images_list = split_nodes_image(codeblocks_list)
     links_list = split_nodes_link(images_list)
-    bold_list = split_nodes_delimiter(links_list, "**", TextType.BOLD)
-    italic_list = split_nodes_delimiter(bold_list, "*", TextType.ITALIC)
+    bold_list = split_nodes_delimiter(links_list, "**", BlockType.BOLD)
+    italic_list = split_nodes_delimiter(bold_list, "*", BlockType.ITALIC)
 
     return italic_list       
 
 def text_node_to_html(text_node):
     from htmlnode import LeafNode #Importing here to avoid circular dependancy
     match text_node.text_type:
-        case TextType.TEXT:
+        case BlockType.TEXT:
             return LeafNode(value=text_node.text)
-        case TextType.BOLD:
+        case BlockType.BOLD:
             return LeafNode(tag="b", value=text_node.text)
-        case TextType.ITALIC:
+        case BlockType.ITALIC:
             return LeafNode(tag="i", value=text_node.text)
-        case TextType.CODE:
+        case BlockType.code:
             return LeafNode(tag="code", value=text_node.text)
-        case TextType.LINK:
+        case BlockType.LINK:
             return LeafNode(tag="a", value=text_node.text, props={"href": text_node.url})
-        case TextType.IMAGE:
+        case BlockType.IMAGE:
             return LeafNode(tag="img", value="", props={"src": text_node.url, "alt": text_node.text})
         case _:
-            raise ValueError("text_type must be a valid TextType enum.")  
+            raise ValueError("text_type must be a valid BlockType enum.")  
         
 # Block handling tools
 def markdown_to_blocks(markdown):
@@ -153,7 +153,7 @@ def block_to_blocktype(markdown):
     unlist_pattern = r"^(\* |\- ).*(\n|$)+"
     orlist_pattern = r"^(\d+)\. .*$" #doesnt check for numerical order. Use a loop to validate numerical order
 
-    patterns = [(quote_pattern, TextType.QUOTE), (code_pattern, TextType.CODE), (header_pattern, TextType.HEADER), (unlist_pattern, TextType.UL), (orlist_pattern, TextType.OL)]
+    patterns = [(quote_pattern, BlockType.QUOTE), (code_pattern, BlockType.code), (header_pattern, BlockType.HEADER), (unlist_pattern, BlockType.UL), (orlist_pattern, BlockType.OL)]
 
     for pattern, text_type in patterns:
         if re.match(pattern, markdown, re.DOTALL):
@@ -162,7 +162,7 @@ def block_to_blocktype(markdown):
             else:
                 return validate_ordered_list(markdown)
 
-    return TextType.PARAGRAPH
+    return BlockType.PARAGRAPH
 
 def validate_ordered_list(block):
     # Pattern to match a line with a number, dot, and space
@@ -173,15 +173,15 @@ def validate_ordered_list(block):
     for line in lines:
         match = re.match(pattern, line)
         if not match:
-            return TextType.PARAGRAPH  # Line does not match the pattern
+            return BlockType.PARAGRAPH  # Line does not match the pattern
         
         number = int(match.group(1))
         if number != expected_number:
-            return TextType.PARAGRAPH  # Number is not in the expected sequence
+            return BlockType.PARAGRAPH  # Number is not in the expected sequence
         
         expected_number += 1  # Increment expected number for the next line
     
-    return TextType.OL
+    return BlockType.OL
 
 
 def markdown_to_html_node(markdown):

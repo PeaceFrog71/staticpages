@@ -1,28 +1,28 @@
 import unittest
-from textnode import TextType, TextNode
+from textnode import BlockType, TextNode
 from tools import *
 
 
 class TestTextNode(unittest.TestCase):
 	def test_eq(self):
-		node = TextNode("This is a text node", TextType.BOLD)
-		node2 = TextNode("This is a text node", TextType.BOLD)
+		node = TextNode("This is a text node", BlockType.BOLD)
+		node2 = TextNode("This is a text node", BlockType.BOLD)
 		self.assertEqual(node, node2)
   
 	def test_eq2(self):
-		node = TextNode("This is another test node", TextType.BOLD)
-		node2 = TextNode("This is a different test node", TextType.BOLD)
+		node = TextNode("This is another test node", BlockType.BOLD)
+		node2 = TextNode("This is a different test node", BlockType.BOLD)
 		self.assertNotEqual(node, node2)
   
 	def test_eq3(self):
-		node = TextNode("This is a text node", TextType.TEXT)
-		node2 = TextNode("This is a text node.", TextType.BOLD)
+		node = TextNode("This is a text node", BlockType.TEXT)
+		node2 = TextNode("This is a text node.", BlockType.BOLD)
 		self.assertNotEqual(node, node2)
   
 	def test_values(self):
-		node = TextNode("This is a text node", TextType.BOLD, "www.google.com")
-		node2 = TextNode("This is a text node", TextType.BOLD, "www.google.com")
-		node3 = TextNode("This is a different test node", TextType.TEXT, "www.yahoo.com")
+		node = TextNode("This is a text node", BlockType.BOLD, "www.google.com")
+		node2 = TextNode("This is a text node", BlockType.BOLD, "www.google.com")
+		node3 = TextNode("This is a different test node", BlockType.TEXT, "www.yahoo.com")
 		self.assertEqual(node.text, node2.text)
 		self.assertEqual(node.text_type, node2.text_type)
 		self.assertEqual(node.url, node2.url)
@@ -31,13 +31,13 @@ class TestTextNode(unittest.TestCase):
 		self.assertNotEqual(node.url, node3.url)
 
 	def test_text_html(self):
-		node_normtxt = TextNode(text_type=TextType.TEXT, text="This is some text")
-		node_boldtxt = TextNode(text_type=TextType.BOLD, text="This is some BOLD text")
-		node_italictxt = TextNode(text_type=TextType.ITALIC, text="This is some ITALIC text")
-		node_codetxt = TextNode(text_type=TextType.CODE, text="This is some CODE text")
-		node_linktxt = TextNode(text_type=TextType.LINK, text="This is a LINK", url="www.google.com")
-		node_imgtxt = TextNode(text_type=TextType.IMAGE, text="This is an IMAGE", url="https://cdn1.vox-cdn.com/uploads/chorus_asset/file/4019352/september-1st-doodle-do-not-translate-5078286822539264-hp.0.gif")
-		node_headertxt = TextNode(text_type=TextType.HEADER, text="This is some text")
+		node_normtxt = TextNode(text_type=BlockType.TEXT, text="This is some text")
+		node_boldtxt = TextNode(text_type=BlockType.BOLD, text="This is some BOLD text")
+		node_italictxt = TextNode(text_type=BlockType.ITALIC, text="This is some ITALIC text")
+		node_codetxt = TextNode(text_type=BlockType.code, text="This is some CODE text")
+		node_linktxt = TextNode(text_type=BlockType.LINK, text="This is a LINK", url="www.google.com")
+		node_imgtxt = TextNode(text_type=BlockType.IMAGE, text="This is an IMAGE", url="https://cdn1.vox-cdn.com/uploads/chorus_asset/file/4019352/september-1st-doodle-do-not-translate-5078286822539264-hp.0.gif")
+		node_headertxt = TextNode(text_type=BlockType.heading, text="This is some text")
 		with self.assertRaises(ValueError, msg=None):
 			TextNode(text_type="header", text="This is some text")
 			text_node_to_html(node_headertxt).to_html()
