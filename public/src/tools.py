@@ -155,10 +155,10 @@ def block_to_blocktype(markdown):
 
     patterns = [(quote_pattern, BlockType.QUOTE), (code_pattern, BlockType.code), (header_pattern, BlockType.HEADER), (unlist_pattern, BlockType.UL), (orlist_pattern, BlockType.OL)]
 
-    for pattern, text_type in patterns:
+    for pattern, block_type in patterns:
         if re.match(pattern, markdown, re.DOTALL):
             if pattern != orlist_pattern:
-                return text_type
+                return block_type
             else:
                 return validate_ordered_list(markdown)
 

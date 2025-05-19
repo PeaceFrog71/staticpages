@@ -2,12 +2,12 @@ from enum import Enum
 
 class BlockType(Enum):
     #Block types
-    #TEXT = "text"
-    #BOLD = "bold"
-    #ITALIC = "italic"
+    TEXT = "text"
+    BOLD = "bold"
+    ITALIC = "italic"
+    LINK = "link"
+    IMAGE = "image"
     code = "code"
-    #LINK = "link"
-    #IMAGE = "image"
     heading = "heading"
     quote = "quote"
     paragraph = "paragraph"
