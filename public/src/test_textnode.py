@@ -34,10 +34,10 @@ class TestTextNode(unittest.TestCase):
 		node_normtxt = TextNode(text_type=BlockType.TEXT, text="This is some text")
 		node_boldtxt = TextNode(text_type=BlockType.BOLD, text="This is some BOLD text")
 		node_italictxt = TextNode(text_type=BlockType.ITALIC, text="This is some ITALIC text")
-		node_codetxt = TextNode(text_type=BlockType.code, text="This is some CODE text")
+		node_codetxt = TextNode(text_type=BlockType.CODE, text="This is some CODE text")
 		node_linktxt = TextNode(text_type=BlockType.LINK, text="This is a LINK", url="www.google.com")
 		node_imgtxt = TextNode(text_type=BlockType.IMAGE, text="This is an IMAGE", url="https://cdn1.vox-cdn.com/uploads/chorus_asset/file/4019352/september-1st-doodle-do-not-translate-5078286822539264-hp.0.gif")
-		node_headertxt = TextNode(text_type=BlockType.heading, text="This is some text")
+		node_headertxt = TextNode(text_type=BlockType.HEADING, text="This is some text")
 		with self.assertRaises(ValueError, msg=None):
 			TextNode(text_type="header", text="This is some text")
 			text_node_to_html(node_headertxt).to_html()

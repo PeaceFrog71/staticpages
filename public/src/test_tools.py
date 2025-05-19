@@ -89,7 +89,7 @@ class TestingTools(unittest.TestCase):
         self.text_node = TextNode("example", BlockType.TEXT)
         self.bold_node = TextNode("bold text", BlockType.BOLD)
         self.italic_node = TextNode("italic text", BlockType.ITALIC)
-        self.code_node = TextNode("code text", BlockType.code)
+        self.code_node = TextNode("code text", BlockType.CODE)
         self.link_node = TextNode("link text", BlockType.LINK, url="http://example.com")
         self.image_node = TextNode("alt text", BlockType.IMAGE, url="http://image.com/image.jpg")
         self.input_text0 = ""
@@ -101,7 +101,7 @@ class TestingTools(unittest.TestCase):
         TextNode(" with an ", BlockType.TEXT),
         TextNode("italic", BlockType.ITALIC),
         TextNode(" word and a ", BlockType.TEXT),
-        TextNode("code block", BlockType.code),
+        TextNode("code block", BlockType.CODE),
         TextNode(" and an ", BlockType.TEXT),
         TextNode("obi wan image", BlockType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
         TextNode(" and a ", BlockType.TEXT),
@@ -113,7 +113,7 @@ class TestingTools(unittest.TestCase):
         TextNode(" and an ", BlockType.TEXT),
         TextNode("obi wan image", BlockType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
         TextNode(" and a ", BlockType.TEXT),
-        TextNode("code block", BlockType.code),
+        TextNode("code block", BlockType.CODE),
         TextNode(" word and an ", BlockType.TEXT),
         TextNode("italic", BlockType.ITALIC),
         TextNode(" with a ", BlockType.TEXT),
@@ -224,14 +224,14 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
     def test_markdown_to_blocks_oneblock(self):
         self.assertEqual(markdown_to_blocks("Exploration fuels curiosity, sparking innovation and growth. \n\nEach discovery, no matter how small, shapes our understanding of the world and our place within it."), ["Exploration fuels curiosity, sparking innovation and growth.", "Each discovery, no matter how small, shapes our understanding of the world and our place within it."])
 
-"""     # Testing block type assignment
+    # Testing block type assignment
     def test_block_type_assign_header(self):
         block_header = " This is a header block."
         self.assertEqual(block_to_blocktype(block_header), BlockType.PARAGRAPH)
 
         for i in range(1, 7):
             block_header = ("#"*i) + " This is a header block."
-            self.assertEqual(block_to_blocktype(block_header), BlockType.heading)
+            self.assertEqual(block_to_blocktype(block_header), BlockType.HEADING)
 
         block_header = ("#"*7) + " This is not a header block."
         self.assertEqual(block_to_blocktype(block_header), BlockType.PARAGRAPH)
@@ -246,13 +246,13 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
         block_paragraph = "This is just a paragraph."
 
         # Test Cases for block type assignment
-        assert block_to_blocktype(block_header) == BlockType.heading
-        assert block_to_blocktype(block_code) == BlockType.code
+        assert block_to_blocktype(block_header) == BlockType.HEADING
+        assert block_to_blocktype(block_code) == BlockType.CODE
         assert block_to_blocktype(block_quote) == BlockType.QUOTE
-        assert block_to_blocktype(block_unordered_list) == BlockType.UL
-        assert block_to_blocktype(block_ordered_list) == BlockType.OL
+        assert block_to_blocktype(block_unordered_list) == BlockType.UNORDERED_LIST
+        assert block_to_blocktype(block_ordered_list) == BlockType.ORDERED_LIST
         assert block_to_blocktype(block_invalid_ol) == BlockType.PARAGRAPH
-        assert block_to_blocktype(block_paragraph) == BlockType.PARAGRAPH """
+        assert block_to_blocktype(block_paragraph) == BlockType.PARAGRAPH
 
 """     # Test cases for Markdown to HTML node, returns single hmtl node with html tags for text found in markdown
     def test_markdown_to_html_node(self):

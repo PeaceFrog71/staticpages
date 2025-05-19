@@ -115,7 +115,7 @@ def text_to_textnodes(text):
         4. Bold (**)
         5. Italic (*) 
     """
-    codeblocks_list = split_nodes_delimiter(initial_list, "`", BlockType.code)
+    codeblocks_list = split_nodes_delimiter(initial_list, "`", BlockType.CODE)
     images_list = split_nodes_image(codeblocks_list)
     links_list = split_nodes_link(images_list)
     bold_list = split_nodes_delimiter(links_list, "**", BlockType.BOLD)
@@ -132,7 +132,7 @@ def text_node_to_html(text_node):
             return LeafNode(tag="b", value=text_node.text)
         case BlockType.ITALIC:
             return LeafNode(tag="i", value=text_node.text)
-        case BlockType.code:
+        case BlockType.CODE:
             return LeafNode(tag="code", value=text_node.text)
         case BlockType.LINK:
             return LeafNode(tag="a", value=text_node.text, props={"href": text_node.url})
@@ -153,7 +153,7 @@ def block_to_blocktype(markdown):
     unlist_pattern = r"^(\* |\- ).*(\n|$)+"
     orlist_pattern = r"^(\d+)\. .*$" #doesnt check for numerical order. Use a loop to validate numerical order
 
-    patterns = [(quote_pattern, BlockType.QUOTE), (code_pattern, BlockType.code), (header_pattern, BlockType.HEADER), (unlist_pattern, BlockType.UL), (orlist_pattern, BlockType.OL)]
+    patterns = [(quote_pattern, BlockType.QUOTE), (code_pattern, BlockType.CODE), (header_pattern, BlockType.HEADING), (unlist_pattern, BlockType.UNORDERED_LIST), (orlist_pattern, BlockType.ORDERED_LIST)]
 
     for pattern, block_type in patterns:
         if re.match(pattern, markdown, re.DOTALL):
@@ -181,7 +181,7 @@ def validate_ordered_list(block):
         
         expected_number += 1  # Increment expected number for the next line
     
-    return BlockType.OL
+    return BlockType.ORDERED_LIST
 
 
 def markdown_to_html_node(markdown):

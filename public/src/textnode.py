@@ -2,17 +2,17 @@ from enum import Enum
 
 class BlockType(Enum):
     #Block types
-    TEXT = "text"
-    BOLD = "bold"
-    ITALIC = "italic"
-    LINK = "link"
-    IMAGE = "image"
-    code = "code"
-    heading = "heading"
-    quote = "quote"
-    paragraph = "paragraph"
-    unordered_list = "unordered_list"
-    ordered_list = "ordered_list"
+    TEXT = "TEXT"
+    BOLD = "BOLD"
+    ITALIC = "ITALIC"
+    LINK = "LINK"
+    IMAGE = "IMAGE"
+    CODE = "CODE"
+    HEADING = "HEADING"
+    QUOTE = "QUOTE"
+    PARAGRAPH = "PARAGRAPH"
+    UNORDERED_LIST = "UNORDERED_LIST"
+    ORDERED_LIST = "ORDERED_LIST"
 
 class TextNode:
     def __init__(self, text, text_type: BlockType, url=None):
