@@ -143,16 +143,8 @@ def text_node_to_html(text_node):
         
 # Block handling tools
 def markdown_to_blocks(markdown):
-    if markdown is None:
-        return []
-    markdown_input = markdown
-    markdown_input = markdown_input.split('\n\n')
-    markdown_output = []
-    for item in markdown_input:
-        item = item.strip()
-        if item != "":
-            markdown_output.append(item)
-    return markdown_output
+    clean_blocks = [block.strip() for block in markdown.split("\n\n") if block.strip()]
+    return clean_blocks
 
 def block_to_blocktype(markdown):
     header_pattern = r"^#{1,6} "

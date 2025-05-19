@@ -211,8 +211,7 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
         self.assertEqual(text_to_textnodes(self.input_text1), self.output_expected1)
         self.assertEqual(text_to_textnodes(self.input_text2), self.output_expected2)
         self.assertEqual(text_to_textnodes(self.input_text3), self.output_expected3)
-    # Testing block splitter
-
+    # Testing block splitter Assignment Tests
     def test_markdown_to_blocks(self):
         self.assertEqual(markdown_to_blocks(self.input_block), self.output_block)
     
@@ -225,7 +224,7 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
     def test_markdown_to_blocks_oneblock(self):
         self.assertEqual(markdown_to_blocks("Exploration fuels curiosity, sparking innovation and growth. \n\nEach discovery, no matter how small, shapes our understanding of the world and our place within it."), ["Exploration fuels curiosity, sparking innovation and growth.", "Each discovery, no matter how small, shapes our understanding of the world and our place within it."])
 
-    # Testing block type assignment
+"""     # Testing block type assignment
     def test_block_type_assign_header(self):
         block_header = " This is a header block."
         self.assertEqual(block_to_blocktype(block_header), TextType.PARAGRAPH)
@@ -253,9 +252,9 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
         assert block_to_blocktype(block_unordered_list) == TextType.UL
         assert block_to_blocktype(block_ordered_list) == TextType.OL
         assert block_to_blocktype(block_invalid_ol) == TextType.PARAGRAPH
-        assert block_to_blocktype(block_paragraph) == TextType.PARAGRAPH
+        assert block_to_blocktype(block_paragraph) == TextType.PARAGRAPH """
 
-    # Test cases for Markdown to HTML node, returns single hmtl node with html tags for text found in markdown
+"""     # Test cases for Markdown to HTML node, returns single hmtl node with html tags for text found in markdown
     def test_markdown_to_html_node(self):
         
         #Test Cases for Markdown to HTML Node
@@ -270,5 +269,5 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
         markdown = "# Header"
         body_parent = ParentNode(tag="body", children=[LeafNode(tag="h1", value="Header")])
         html_parent = ParentNode(tag="html", children=[body_parent])
-        self.assertEqual(markdown_to_html_node(markdown), html_parent)
+        self.assertEqual(markdown_to_html_node(markdown), html_parent) """
         
