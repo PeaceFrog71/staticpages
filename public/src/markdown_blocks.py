@@ -1,5 +1,6 @@
 from enum import Enum
 import re
+from markdown_blocks import text_to_textnodes 
 
 class BlockType(Enum):
     PARAGRAPH = "paragraph"
@@ -50,3 +51,28 @@ def validate_ordered_list(block):
         expected_number += 1  # Increment expected number for the next line
     
     return BlockType.ORDERED_LIST
+
+
+def markdown_to_html_node(markdown):
+    blocks = markdown_to_blocks(markdown)
+    for block in blocks:
+        block_type = block_to_block_type(block)
+        if block_type == BlockType.PARAGRAPH:
+            # Handle paragraph
+            pass
+        elif block_type == BlockType.HEADING:
+            # Handle heading
+            pass
+        elif block_type == BlockType.CODE:
+            # Handle code
+            pass
+        elif block_type == BlockType.QUOTE:
+            # Handle quote
+            pass
+        elif block_type == BlockType.UNORDERED_LIST:
+            # Handle unordered list
+            pass
+        elif block_type == BlockType.ORDERED_LIST:
+            # Handle ordered list
+            pass
+
