@@ -1,6 +1,7 @@
 from enum import Enum
 import re
 from markdown_blocks import text_to_textnodes 
+from htmlnode import HTMLNode, LeafNode, ParentNode  # Assuming htmlnode is a module that provides HTML node classes
 
 class BlockType(Enum):
     PARAGRAPH = "paragraph"
@@ -55,10 +56,16 @@ def validate_ordered_list(block):
 
 def markdown_to_html_node(markdown):
     blocks = markdown_to_blocks(markdown)
+    if not blocks:
+        return LeafNode(tag=None, value="")  # Return an empty node if no blocks are found
+    master_node = ParentNode(tag="div", children=[])
+    
     for block in blocks:
         block_type = block_to_block_type(block)
         if block_type == BlockType.PARAGRAPH:
             # Handle paragraph
+            # Assuming text_to_textnodes is a function that converts text to HTML nodes
+            text_nodes = text_to_textnodes(block, block.type)         
             pass
         elif block_type == BlockType.HEADING:
             # Handle heading

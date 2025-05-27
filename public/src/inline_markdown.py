@@ -22,7 +22,7 @@ def text_to_textnodes(text):
     nodes = [TextNode(text, TextType.TEXT)]
 
     # Split the text into nodes based on the presence of delimiters
-    nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
+    nodes = split_nodes_delimiter(nodes, "```", TextType.CODE)
     nodes = split_nodes_image(nodes)
     nodes = split_nodes_link(nodes)
     nodes = split_nodes_delimiter(nodes, "**", TextType.BOLD)
@@ -47,7 +47,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
             if text_divided[i] == "":
                 continue
             if i % 2 == 0:
-                # the odd elements will be the strings that will remain TEXT
+                # the even elements will be the strings that will remain TEXT
                 return_nodes.append(TextNode(text_divided[i], TextType.TEXT))
             else:
                 # the odd elements will be the delimited strings that should be converted to new type
