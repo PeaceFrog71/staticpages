@@ -1,17 +1,34 @@
 import re
 from textnode import TextNode, TextType
 
-def extract_markdown_images(text):
-    if text is None:
-        raise ValueError("Invalid Input. Expected text input.")
-    image_list = re.findall(r"!\[(.*?)\]\((.*?)\)", text)
-    return image_list
 
-def extract_markdown_links(text):
+def text_to_textnodes(text):
+    """Split in this order:
+        1. Code blocks (to protect their contents)
+        2. Images (most specific with !)
+        3. Links
+        4. Bold (**)
+        5. Italic (*) 
+    """
     if text is None:
         raise ValueError("Invalid Input. Expected text input.")
-    link_list = re.findall(r"\[(.*?)\]\((.*?)\)", text)
-    return link_list
+    if not isinstance(text, str):
+        raise ValueError("Invalid Input. Expected string input.")
+    if text == "":
+        return []
+    # Split the text into nodes based on the presence of delimiters
+    # and create TextNode objects for each segment.
+    # The first split is done to create a single TextNode object for the entire text.
+    nodes = [TextNode(text, TextType.TEXT)]
+
+    # Split the text into nodes based on the presence of delimiters
+    nodes = split_nodes_delimiter(nodes, "```", TextType.CODE)
+    nodes = split_nodes_image(nodes)
+    nodes = split_nodes_link(nodes)
+    nodes = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+    nodes = split_nodes_delimiter(nodes, "_", TextType.ITALIC)
+
+    return nodes  
 
 # Processes Lists of TextNodes and returns a new List of Nodes that are TextNodes and the text_type requested.
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
@@ -30,13 +47,15 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
             if text_divided[i] == "":
                 continue
             if i % 2 == 0:
-                # the odd elements will be the strings that will remain TEXT
+                # the even elements will be the strings that will remain TEXT
                 return_nodes.append(TextNode(text_divided[i], TextType.TEXT))
             else:
                 # the odd elements will be the delimited strings that should be converted to new type
                 # then append the new textnode to the return nodes list.
                 return_nodes.append(TextNode(text_divided[i], text_type))        
     return return_nodes
+
+
 
 #make a seperate function for each delimter type.
 #Images split delimiter
@@ -69,9 +88,9 @@ def split_nodes_image(old_nodes):
                     
                     index += 1
 
-
     return new_nodes
 
+#Links split delimiter
 def split_nodes_link(old_nodes):
     new_nodes = []
     links = []
@@ -103,52 +122,16 @@ def split_nodes_link(old_nodes):
     return new_nodes
 
 
+# The regex pattern for extracting images in markdown format
+def extract_markdown_images(text):
+    if text is None:
+        raise ValueError("Invalid Input. Expected text input.")
+    image_list = re.findall(r"!\[(.*?)\]\((.*?)\)", text)
+    return image_list
 
-def text_to_textnodes(text):
-    first_text = TextNode(text, TextType.TEXT)
-    initial_list = [first_text]
-    """Split in this order:
-        1. Code blocks (to protect their contents)
-        2. Images (most specific with !)
-        3. Links
-        4. Bold (**)
-        5. Italic (*) 
-    """
-    codeblocks_list = split_nodes_delimiter(initial_list, "`", TextType.CODE)
-    images_list = split_nodes_image(codeblocks_list)
-    links_list = split_nodes_link(images_list)
-    bold_list = split_nodes_delimiter(links_list, "**", TextType.BOLD)
-    italic_list = split_nodes_delimiter(bold_list, "*", TextType.ITALIC)
-
-    return italic_list       
-
-def text_node_to_html(text_node):
-    from htmlnode import LeafNode #Importing here to avoid circular dependancy
-    match text_node.text_type:
-        case TextType.TEXT:
-            return LeafNode(value=text_node.text)
-        case TextType.BOLD:
-            return LeafNode(tag="b", value=text_node.text)
-        case TextType.ITALIC:
-            return LeafNode(tag="i", value=text_node.text)
-        case TextType.CODE:
-            return LeafNode(tag="code", value=text_node.text)
-        case TextType.LINK:
-            return LeafNode(tag="a", value=text_node.text, props={"href": text_node.url})
-        case TextType.IMAGE:
-            return LeafNode(tag="img", value="", props={"src": text_node.url, "alt": text_node.text})
-        case _:
-            raise ValueError("text_type must be a valid TextType enum.")  
-        
-# Block handling tools
-def markdown_to_blocks(markdown):
-    if markdown is None:
-        return []
-    markdown_input = markdown
-    markdown_input = markdown_input.split('\n\n')
-    markdown_output = []
-    for item in markdown_input:
-        item.strip()
-        if item != "":
-            markdown_output.append(item)
-    return markdown_output
+# The regex pattern for extracting links in markdown format
+def extract_markdown_links(text):
+    if text is None:
+        raise ValueError("Invalid Input. Expected text input.")
+    link_list = re.findall(r"\[(.*?)\]\((.*?)\)", text)
+    return link_list
