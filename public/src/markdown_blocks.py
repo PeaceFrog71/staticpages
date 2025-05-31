@@ -2,6 +2,7 @@ from enum import Enum
 import re
 from markdown_blocks import text_to_textnodes 
 from htmlnode import HTMLNode, LeafNode, ParentNode  # Assuming htmlnode is a module that provides HTML node classes
+from textnode import text_node_to_html_node, TextNode, TextType
 
 class BlockType(Enum):
     PARAGRAPH = "paragraph"
@@ -58,28 +59,39 @@ def markdown_to_html_node(markdown):
     blocks = markdown_to_blocks(markdown)
     if not blocks:
         return LeafNode(tag=None, value="")  # Return an empty node if no blocks are found
-    master_node = ParentNode(tag="div", children=[])
+    children = []
     
     for block in blocks:
-        block_type = block_to_block_type(block)
-        if block_type == BlockType.PARAGRAPH:
-            # Handle paragraph
-            # Assuming text_to_textnodes is a function that converts text to HTML nodes
-            text_nodes = text_to_textnodes(block, block.type)         
-            pass
-        elif block_type == BlockType.HEADING:
-            # Handle heading
-            pass
-        elif block_type == BlockType.CODE:
-            # Handle code
-            pass
-        elif block_type == BlockType.QUOTE:
-            # Handle quote
-            pass
-        elif block_type == BlockType.UNORDERED_LIST:
-            # Handle unordered list
-            pass
-        elif block_type == BlockType.ORDERED_LIST:
-            # Handle ordered list
-            pass
+        html_node = block_to_html_node(block)
+        if html_node is not None:
+            children.append(html_node)
+    if len(children) == 1:
+        return children[0]
+    return ParentNode(tag="div", children=children)
 
+def block_to_html_node(block):
+    block_type = block_to_block_type(block)
+    
+    match block_type:
+        case BlockType.PARAGRAPH:
+            return paragraph_to_html_node(block)
+        case BlockType.HEADING:
+            return heading_to_html_node(block)
+        case BlockType.QUOTE:
+            return quote_to_html_node(block)
+        case BlockType.CODE:
+            return code_to_html_node(block)
+        case BlockType.UNORDERED_LIST:
+            return ul_to_html_node(block)
+        case BlockType.ORDERED_LIST:
+            return ol_to_html_node(block)
+        
+def paragraph_to_html_node(block):
+    return HTMLNode("p", None, text_to_children(block), None)
+
+def text_to_children(text):
+    text_nodes = text_to_textnodes(text)
+    children = []
+    for node in text_nodes:
+        children.append(text_node_to_html_node(node))
+    return children
